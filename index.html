@@ -5,34 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Long Holiday Patrol</title>
 <style>
-/* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 html,body{width:100%;height:100%;overflow:hidden}
 body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 
-/* ════════════════════════════════
-   CONFIG: ใส่ GAS Web App URL ตรงนี้
-   ════════════════════════════════ */
-/* หา GAS_URL ใน script.js ด้านล่าง */
+/* ══════════════════════════════
+   CONFIG: ใส่ GAS Web App URL
+   ══════════════════════════════ */
+/* แก้ใน script ด้านล่าง */
 
-/* ── App shell ── */
-.app{
-  width:100%;height:100vh;height:100dvh;
-  display:flex;flex-direction:column;overflow:hidden;
-  background:#fff;
-}
+.app{width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:#fff}
 
 /* ── Topbar ── */
-.topbar{
-  flex-shrink:0;background:#fff;
-  border-bottom:1.5px solid #E5E7EB;
-  padding:12px 16px 10px;
-}
-.top-title{
-  font-size:20px;font-weight:800;color:#111;
-  text-align:center;margin-bottom:10px;
-}
+.topbar{flex-shrink:0;background:#fff;border-bottom:1.5px solid #E5E7EB;padding:12px 16px 10px}
+.top-title{font-size:20px;font-weight:800;color:#111;text-align:center;margin-bottom:10px}
 .progress-wrap{background:#F3F4F6;border-radius:999px;height:7px;overflow:hidden}
 .progress-fill{height:7px;border-radius:999px;background:#16A34A;transition:width 0.3s}
 .progress-lbl{display:flex;justify-content:space-between;margin-top:5px}
@@ -41,17 +28,22 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 .dot-pulse{width:7px;height:7px;border-radius:50%;background:#16A34A;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
+/* ── Criteria banner ── */
+.criteria-bar{
+  flex-shrink:0;
+  background:#EFF6FF;border-bottom:1.5px solid #BFDBFE;
+  padding:10px 16px;
+}
+.criteria-text{font-size:13px;color:#1D4ED8;line-height:1.6;font-weight:500}
+.criteria-text strong{font-weight:700}
+
 /* ── Table header ── */
 .tbl-header{
   flex-shrink:0;
-  display:grid;grid-template-columns:1fr 86px 86px 86px;
+  display:grid;grid-template-columns:1fr 100px;
   background:#F9FAFB;border-bottom:1.5px solid #E5E7EB;
 }
-.th{
-  padding:11px 4px;
-  font-size:14px;font-weight:700;color:#4B5563;
-  text-align:center;line-height:1.4;
-}
+.th{padding:11px 8px;font-size:14px;font-weight:700;color:#4B5563;text-align:center}
 .th-name{text-align:left;padding-left:16px}
 
 /* ── Scrollable body ── */
@@ -64,54 +56,67 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 .station-row.incomplete .row-num{color:#F59E0B}
 .station-row.incomplete .ox-wrap{border-color:#FDE68A}
 
-.row-main{
-  display:grid;grid-template-columns:1fr 86px 86px 86px;
-  align-items:center;min-height:62px;
-}
-.row-num-name{padding:12px 6px 12px 16px}
+.row-main{display:grid;grid-template-columns:1fr 100px;align-items:center;min-height:62px}
+.row-num-name{padding:12px 8px 12px 16px}
 .row-num{font-size:13px;font-weight:700;color:#9CA3AF;margin-bottom:3px;transition:color 0.2s}
 .row-name{font-size:16px;font-weight:600;color:#111;line-height:1.35}
 
-/* ── O/X buttons ── */
-.cell{display:flex;justify-content:center;align-items:center;padding:6px 4px}
-.ox-wrap{display:flex;border-radius:10px;overflow:hidden;border:1.5px solid #E5E7EB;transition:border-color 0.15s}
+/* ── O/X single button ── */
+.cell{display:flex;justify-content:center;align-items:center;padding:8px}
+.ox-wrap{display:flex;border-radius:12px;overflow:hidden;border:1.5px solid #E5E7EB;transition:border-color 0.15s}
 .btn-o,.btn-x{
-  width:38px;height:50px;
+  width:44px;height:52px;
   border:none;background:#fff;
   font-size:20px;font-weight:800;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   -webkit-user-select:none;user-select:none;
-  transition:background 0.1s;
+  transition:background 0.12s;
 }
 .btn-o{color:#D1D5DB;border-right:1px solid #E5E7EB}
 .btn-x{color:#D1D5DB}
 .btn-o.active{background:#DCFCE7;color:#15803D}
 .btn-x.active{background:#FEE2E2;color:#DC2626}
 
-/* ── NG note ── */
-.ng-note-row{padding:0 16px 12px;display:none}
-.ng-note-row.show{display:block}
-.ng-note-wrap{background:#FFF7F7;border-radius:10px;padding:10px 12px;border:1px solid #FECACA}
-.ng-lbl{font-size:14px;font-weight:700;color:#DC2626;margin-bottom:6px}
-.ng-ta{
-  width:100%;border:none;background:transparent;
-  font-size:16px;color:#111;
-  resize:none;font-family:inherit;outline:none;min-height:60px;
+/* ── NG sub-issues panel ── */
+.ng-panel{padding:0 16px 14px;display:none}
+.ng-panel.show{display:block}
+.ng-panel-inner{background:#FFF7F7;border-radius:12px;padding:12px 14px;border:1px solid #FECACA}
+.ng-panel-title{font-size:13px;font-weight:700;color:#DC2626;margin-bottom:10px}
+
+.issue-item{margin-bottom:10px}
+.issue-item:last-child{margin-bottom:0}
+.issue-check-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.issue-checkbox{
+  width:24px;height:24px;border-radius:6px;
+  border:2px solid #FCA5A5;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all 0.15s;
 }
-.ng-ta::placeholder{color:#FCA5A5;font-size:15px}
+.issue-checkbox.checked{background:#DC2626;border-color:#DC2626}
+.issue-checkbox svg{display:none}
+.issue-checkbox.checked svg{display:block}
+.issue-label{font-size:15px;font-weight:600;color:#991B1B;cursor:pointer}
+.issue-note{
+  width:100%;padding:9px 12px;
+  border:1px solid #FECACA;border-radius:8px;
+  font-size:15px;color:#111;background:#fff;
+  font-family:inherit;outline:none;resize:none;min-height:52px;
+  display:none;
+}
+.issue-note.show{display:block}
+.issue-note::placeholder{color:#FCA5A5;font-size:14px}
+.issue-note:focus{border-color:#DC2626}
 
 /* ── Bottom bar ── */
 .bottom-bar{
-  flex-shrink:0;
-  padding:12px 16px;
+  flex-shrink:0;padding:12px 16px;
   padding-bottom:max(14px, env(safe-area-inset-bottom));
   border-top:1.5px solid #E5E7EB;background:#fff;
 }
 .btn-submit-full{
   width:100%;padding:18px;border-radius:14px;border:none;
-  background:#16A34A;color:#fff;
-  font-size:19px;font-weight:800;
+  background:#16A34A;color:#fff;font-size:19px;font-weight:800;
   cursor:pointer;letter-spacing:0.02em;
 }
 
@@ -126,10 +131,7 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 .toast.show{opacity:1}
 
 /* ── Bottom sheet ── */
-.sheet-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,0.5);
-  z-index:100;display:flex;align-items:flex-end;
-}
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:flex;align-items:flex-end}
 .sheet-panel{
   background:#fff;border-radius:22px 22px 0 0;
   padding:26px 22px;
@@ -141,51 +143,20 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 .sheet-sub{font-size:15px;color:#9CA3AF;text-align:center;margin-bottom:24px}
 .field-label{font-size:14px;font-weight:700;color:#6B7280;letter-spacing:0.04em;margin-bottom:10px}
 .role-group{display:flex;gap:12px;margin-bottom:22px}
-.role-btn{
-  flex:1;padding:18px 8px;border-radius:14px;
-  border:2px solid #E5E7EB;background:#fff;
-  font-size:21px;font-weight:800;color:#9CA3AF;
-  cursor:pointer;text-align:center;transition:all 0.15s;
-}
+.role-btn{flex:1;padding:18px 8px;border-radius:14px;border:2px solid #E5E7EB;background:#fff;font-size:21px;font-weight:800;color:#9CA3AF;cursor:pointer;text-align:center;transition:all 0.15s}
 .role-btn.selected{border-color:#1D4ED8;background:#EFF6FF;color:#1D4ED8}
-.name-input{
-  width:100%;padding:17px 15px;border-radius:14px;
-  border:1.5px solid #E5E7EB;font-size:18px;color:#111;
-  font-family:inherit;outline:none;background:#fff;
-  margin-bottom:22px;-webkit-appearance:none;
-}
+.name-input{width:100%;padding:17px 15px;border-radius:14px;border:1.5px solid #E5E7EB;font-size:18px;color:#111;font-family:inherit;outline:none;background:#fff;margin-bottom:22px;-webkit-appearance:none}
 .name-input:focus{border-color:#1D4ED8;box-shadow:0 0 0 3px #DBEAFE}
 .name-input::placeholder{color:#D1D5DB}
-.btn-confirm{
-  width:100%;padding:18px;border-radius:14px;border:none;
-  background:#16A34A;color:#fff;font-size:18px;font-weight:800;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
-}
+.btn-confirm{width:100%;padding:18px;border-radius:14px;border:none;background:#16A34A;color:#fff;font-size:18px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
 .btn-confirm:disabled{background:#E5E7EB;color:#9CA3AF;cursor:not-allowed}
-.btn-cancel{
-  width:100%;padding:16px;border-radius:14px;
-  border:1.5px solid #E5E7EB;background:#fff;
-  font-size:16px;font-weight:600;color:#6B7280;
-  cursor:pointer;margin-top:10px;
-}
-.spinner{
-  width:20px;height:20px;
-  border:2.5px solid rgba(255,255,255,0.35);
-  border-top-color:#fff;border-radius:50%;
-  animation:spin 0.7s linear infinite;display:none;
-}
+.btn-cancel{width:100%;padding:16px;border-radius:14px;border:1.5px solid #E5E7EB;background:#fff;font-size:16px;font-weight:600;color:#6B7280;cursor:pointer;margin-top:10px}
+.spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── Sent / Error ── */
-.fullscreen{
-  flex:1;overflow-y:auto;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:40px 20px;text-align:center;
-}
-.icon-circle{
-  width:84px;height:84px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;margin-bottom:22px;
-}
+.fullscreen{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
+.icon-circle{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
 .icon-ok{background:#DCFCE7}
 .icon-err{background:#FEE2E2}
 .screen-title{font-size:26px;font-weight:800;color:#111;margin-bottom:18px}
@@ -199,11 +170,8 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 .ng-box{background:#FEF2F2;border-radius:16px;padding:16px 20px;width:100%;text-align:left;margin-bottom:14px}
 .ng-box-title{font-size:14px;font-weight:700;color:#DC2626;letter-spacing:0.04em;margin-bottom:10px}
 .ng-item{font-size:15px;color:#991B1B;line-height:1.9;margin-bottom:6px}
-.ng-item-note{font-size:14px;color:#B91C1C;padding-left:14px;display:block}
-.btn-action{
-  width:100%;padding:18px;border-radius:14px;border:none;
-  font-size:17px;font-weight:700;cursor:pointer;margin-top:10px;
-}
+.ng-item-detail{font-size:14px;color:#B91C1C;padding-left:14px;display:block}
+.btn-action{width:100%;padding:18px;border-radius:14px;border:none;font-size:17px;font-weight:700;cursor:pointer;margin-top:10px}
 .btn-blue{background:#1D4ED8;color:#fff}
 .btn-dark{background:#374151;color:#fff}
 </style>
@@ -214,11 +182,9 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#fff;color:#111}
 
 <script>
 // ══════════════════════════════════════════════════════
-//  ⚙️  ตั้งค่า GAS URL ตรงนี้เท่านั้น
-//  วิธีหา: Apps Script → Deploy → Manage deployments → Copy Web app URL
+//  ⚙️  ใส่ GAS Web App URL ตรงนี้
 // ══════════════════════════════════════════════════════
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbx2s5dO4J8b8rFY0V-6-OY0HVuCOYW15HGHrPE3PfIHuOPwjdbejJqJooBIn-0j5tvcLg/exec';
-// ══════════════════════════════════════════════════════
 
 const STATIONS=[
   {id:1,name:"ที่จอดรถผู้บริหาร"},{id:2,name:"ไลน์ sewing"},{id:3,name:"พ่นกาว"},
@@ -235,57 +201,104 @@ const STATIONS=[
   {id:28,name:"ที่เก็บถังisoใช้แล้ว"},{id:29,name:"ไลน์ Cutting"},
   {id:30,name:"ที่จอดรถผู้บริหารด้านหลัง"},{id:31,name:"หลังสนามบอล"}
 ];
-const QS=[
-  {key:"e",label:"ก. ไฟฟ้า"},
-  {key:"g",label:"ข. แก๊ส/สารเคมี"},
-  {key:"o",label:"ค. อื่นๆ"}
+
+const ISSUE_KEYS=[
+  {key:"electric",label:"ไฟฟ้า"},
+  {key:"gas",label:"แก๊ส/สารเคมี"},
+  {key:"other",label:"อื่นๆ"}
 ];
 
+// ── State ────────────────────────────────────────────
 function initAns(){
   const a={};
-  STATIONS.forEach(s=>{a[s.id]={e:null,g:null,o:null,e_n:"",g_n:"",o_n:""};});
+  STATIONS.forEach(s=>{
+    a[s.id]={
+      result:null,          // null | "O" | "X"
+      electric:{on:false,note:""},
+      gas:{on:false,note:""},
+      other:{on:false,note:""}
+    };
+  });
   return a;
 }
 let st={page:"form",ans:initAns(),draft:null,result:null,role:"",name:"",submitting:false};
 
-function isComplete(id){const a=st.ans[id];return a.e!==null&&a.g!==null&&a.o!==null;}
-function hasNG(id){const a=st.ans[id];return a.e==="X"||a.g==="X"||a.o==="X";}
+// ── Helpers ──────────────────────────────────────────
+function isComplete(id){
+  const a=st.ans[id];
+  if(a.result===null)return false;
+  if(a.result==="O")return true;
+  // X: ต้องเลือก issue อย่างน้อย 1 อย่าง
+  return ISSUE_KEYS.some(k=>a[k.key].on);
+}
+function hasNG(id){return st.ans[id].result==="X";}
 function completedCount(){return STATIONS.filter(s=>isComplete(s.id)).length;}
 function pct(){return Math.round(completedCount()/31*100);}
+
+// Format: "O" หรือ "X,ไฟฟ้า,note,แก๊ส/สารเคมี,note2"
 function formatAnswer(id){
   const a=st.ans[id];
-  return QS.map(q=>{
-    const v=a[q.key]||"?",n=a[q.key+"_n"]||"";
-    return v==="X"&&n?`X,${n}`:v;
-  }).join("/");
+  if(a.result==="O")return "O";
+  if(a.result!=="X")return "?";
+  const parts=["X"];
+  ISSUE_KEYS.forEach(k=>{
+    if(a[k.key].on){
+      parts.push(k.label);
+      if(a[k.key].note.trim())parts.push(a[k.key].note.trim());
+    }
+  });
+  return parts.join(",");
 }
 
 let toastTimer=null;
 function showToast(msg){
   const t=document.getElementById("toast");if(!t)return;
   t.textContent=msg;t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove("show"),3000);
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3000);
 }
 
-function setVal(sid,qk,v){
-  const cur=st.ans[sid][qk];
-  st.ans[sid][qk]=cur===v?null:v;
+// ── Row re-render (no full re-render on tap) ──────────
+function setResult(sid,val){
+  const cur=st.ans[sid].result;
+  st.ans[sid].result=cur===val?null:val;
+  // reset issues ถ้าเปลี่ยนจาก X
+  if(st.ans[sid].result!=="X"){
+    ISSUE_KEYS.forEach(k=>{st.ans[sid][k.key].on=false;});
+  }
   st.draft=new Date();
   rerenderRow(sid);updateTopbar();
 }
+function toggleIssue(sid,key){
+  st.ans[sid][key].on=!st.ans[sid][key].on;
+  st.draft=new Date();
+  rerenderRow(sid);updateTopbar();
+}
+
 function rerenderRow(sid){
   const row=document.querySelector(`[data-row="${sid}"]`);if(!row)return;
   const a=st.ans[sid];
-  QS.forEach(q=>{
-    const bO=row.querySelector(`[data-sid="${sid}"][data-qk="${q.key}"][data-v="O"]`);
-    const bX=row.querySelector(`[data-sid="${sid}"][data-qk="${q.key}"][data-v="X"]`);
-    if(bO)bO.className="btn-o"+(a[q.key]==="O"?" active":"");
-    if(bX)bX.className="btn-x"+(a[q.key]==="X"?" active":"");
-    const nr=row.querySelector(`[data-note-row="${sid}-${q.key}"]`);
-    if(nr)a[q.key]==="X"?nr.classList.add("show"):nr.classList.remove("show");
-  });
-  row.className="station-row"+(hasNG(sid)?" has-ng":"")+(isComplete(sid)?"":" incomplete");
+
+  // O/X buttons
+  const bO=row.querySelector(`[data-ox="O"]`);
+  const bX=row.querySelector(`[data-ox="X"]`);
+  if(bO)bO.className="btn-o"+(a.result==="O"?" active":"");
+  if(bX)bX.className="btn-x"+(a.result==="X"?" active":"");
+
+  // NG panel
+  const panel=row.querySelector(".ng-panel");
+  if(panel){
+    a.result==="X"?panel.classList.add("show"):panel.classList.remove("show");
+    // issue checkboxes
+    ISSUE_KEYS.forEach(k=>{
+      const cb=panel.querySelector(`[data-cb="${k.key}"]`);
+      const note=panel.querySelector(`[data-note="${k.key}"]`);
+      if(cb){a[k.key].on?cb.classList.add("checked"):cb.classList.remove("checked");}
+      if(note){a[k.key].on?note.classList.add("show"):note.classList.remove("show");}
+    });
+  }
+
+  const done=isComplete(sid),ng=hasNG(sid);
+  row.className="station-row"+(ng?" has-ng":"")+(done?"":" incomplete");
 }
 function updateTopbar(){
   const f=document.getElementById("pf"),l=document.getElementById("pl"),d=document.getElementById("dl");
@@ -294,36 +307,52 @@ function updateTopbar(){
   if(d&&st.draft)d.style.display="flex";
 }
 
+// ── Main render ───────────────────────────────────────
 function render(){
   const app=document.getElementById("app");if(!app)return;
   if(st.page==="sent"){renderSent(app);return;}
   if(st.page==="error"){renderError(app);return;}
 
+  const checkSVG=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
   let rowsHtml="";
   STATIONS.forEach(s=>{
     const a=st.ans[s.id];
     const done=isComplete(s.id),ng=hasNG(s.id);
-    let cells="";
-    QS.forEach(q=>{
-      cells+=`<div class="cell"><div class="ox-wrap">
-        <button class="btn-o${a[q.key]==="O"?" active":""}" data-sid="${s.id}" data-qk="${q.key}" data-v="O">O</button>
-        <button class="btn-x${a[q.key]==="X"?" active":""}" data-sid="${s.id}" data-qk="${q.key}" data-v="X">X</button>
-      </div></div>`;
-    });
-    let ngRows="";
-    QS.forEach(q=>{
-      ngRows+=`<div class="ng-note-row${a[q.key]==="X"?" show":""}" data-note-row="${s.id}-${q.key}">
-        <div class="ng-note-wrap">
-          <div class="ng-lbl">${q.label} — ระบุปัญหา:</div>
-          <textarea class="ng-ta" data-sid="${s.id}" data-qn="${q.key}" placeholder="พิมพ์รายละเอียด...">${a[q.key+"_n"]||""}</textarea>
+
+    // issue sub-items
+    let issuesHtml="";
+    ISSUE_KEYS.forEach(k=>{
+      issuesHtml+=`
+      <div class="issue-item">
+        <div class="issue-check-row">
+          <div class="issue-checkbox${a[k.key].on?" checked":""}" data-cb="${k.key}" data-sid="${s.id}">${checkSVG}</div>
+          <div class="issue-label" data-cb="${k.key}" data-sid="${s.id}">${k.label}</div>
         </div>
+        <textarea class="issue-note${a[k.key].on?" show":""}" data-note="${k.key}" data-sid="${s.id}" placeholder="รายละเอียด ${k.label}...">${a[k.key].note}</textarea>
       </div>`;
     });
-    rowsHtml+=`<div class="station-row${ng?" has-ng":""}${done?"":" incomplete"}" data-row="${s.id}">
+
+    rowsHtml+=`
+    <div class="station-row${ng?" has-ng":""}${done?"":" incomplete"}" data-row="${s.id}">
       <div class="row-main">
-        <div class="row-num-name"><div class="row-num">${s.id}</div><div class="row-name">${s.name}</div></div>
-        ${cells}
-      </div>${ngRows}
+        <div class="row-num-name">
+          <div class="row-num">${s.id}</div>
+          <div class="row-name">${s.name}</div>
+        </div>
+        <div class="cell">
+          <div class="ox-wrap">
+            <button class="btn-o${a.result==="O"?" active":""}" data-ox="O" data-sid="${s.id}">O</button>
+            <button class="btn-x${a.result==="X"?" active":""}" data-ox="X" data-sid="${s.id}">X</button>
+          </div>
+        </div>
+      </div>
+      <div class="ng-panel${a.result==="X"?" show":""}">
+        <div class="ng-panel-inner">
+          <div class="ng-panel-title">เลือกปัญหาที่พบ (เลือกได้มากกว่า 1)</div>
+          ${issuesHtml}
+        </div>
+      </div>
     </div>`;
   });
 
@@ -357,28 +386,58 @@ function render(){
       <div class="draft-ind" id="dl" style="display:${st.draft?"flex":"none"}"><span class="dot-pulse"></span>Draft saved</div>
     </div>
   </div>
+
+  <div class="criteria-bar">
+    <div class="criteria-text">
+      <strong>ตรวจสอบ:</strong>
+      1. ไฟฟ้าปิดการใช้งาน &nbsp;
+      2. แก๊ส/สารเคมีปิดไม่รั่วไหล &nbsp;
+      3. อื่นๆ
+    </div>
+  </div>
+
   <div class="tbl-header">
     <div class="th th-name">สถานที่</div>
-    <div class="th">ก.<br>ไฟฟ้า</div>
-    <div class="th">ข.<br>แก๊ส/เคมี</div>
-    <div class="th">ค.<br>อื่นๆ</div>
+    <div class="th">ผล</div>
   </div>
+
   <div class="tbl-body">${rowsHtml}</div>
   <div class="bottom-bar"><button class="btn-submit-full" id="btn-submit">ส่งรายงาน</button></div>
   ${sheetHtml}`;
 
+  // ── Events ──────────────────────────────────────────
   app.addEventListener("click",e=>{
-    const btn=e.target.closest("[data-v]");
-    if(btn&&btn.dataset.sid){setVal(parseInt(btn.dataset.sid),btn.dataset.qk,btn.dataset.v);return;}
+    // O/X button
+    const oxBtn=e.target.closest("[data-ox]");
+    if(oxBtn&&oxBtn.dataset.sid){
+      setResult(parseInt(oxBtn.dataset.sid),oxBtn.dataset.ox);return;
+    }
+    // issue checkbox or label
+    const cbEl=e.target.closest("[data-cb][data-sid]");
+    if(cbEl){
+      toggleIssue(parseInt(cbEl.dataset.sid),cbEl.dataset.cb);return;
+    }
+    // Submit
     if(e.target.closest("#btn-submit")){
       const bad=STATIONS.filter(s=>!isComplete(s.id));
       if(bad.length>0){
-        showToast(`ยังไม่ครบ ${bad.length} จุด — กรุณากด O หรือ X ให้ครบทั้ง 3 ช่อง`);
+        showToast(`ยังไม่ครบ ${bad.length} จุด — กรุณากด O หรือ X ให้ครบ`);
         document.querySelector(`[data-row="${bad[0].id}"]`)?.scrollIntoView({behavior:"smooth",block:"center"});
+        return;
+      }
+      // ตรวจ X ที่ยังไม่เลือก issue
+      const noIssue=STATIONS.filter(s=>{
+        const a=st.ans[s.id];
+        return a.result==="X"&&!ISSUE_KEYS.some(k=>a[k.key].on);
+      });
+      if(noIssue.length>0){
+        showToast(`จุดที่ ${noIssue[0].id} กด X แต่ยังไม่เลือกประเภทปัญหา`);
+        document.querySelector(`[data-row="${noIssue[0].id}"]`)?.scrollIntoView({behavior:"smooth",block:"center"});
         return;
       }
       st.page="presubmit";render();return;
     }
+    // role
     const rb=e.target.closest("[data-role]");
     if(rb){
       st.role=rb.dataset.role;
@@ -392,19 +451,20 @@ function render(){
       doSubmit();return;
     }
   });
+
   app.addEventListener("input",e=>{
-    const ta=e.target.closest("[data-qn]");
-    if(ta){
-      st.ans[parseInt(ta.dataset.sid)][ta.dataset.qn+"_n"]=ta.value;
+    // note textarea
+    const noteEl=e.target.closest("[data-note][data-sid]");
+    if(noteEl){
+      st.ans[parseInt(noteEl.dataset.sid)][noteEl.dataset.note].note=noteEl.value;
       st.draft=new Date();
       const d=document.getElementById("dl");if(d)d.style.display="flex";
       return;
     }
     if(e.target.closest("#name-inp")){st.name=e.target.value;checkBtn();}
   });
-  if(st.page==="presubmit"){
-    setTimeout(()=>document.getElementById("name-inp")?.focus(),150);
-  }
+
+  if(st.page==="presubmit"){setTimeout(()=>document.getElementById("name-inp")?.focus(),150);}
 }
 
 function checkBtn(){
@@ -412,7 +472,6 @@ function checkBtn(){
   if(b)b.disabled=!(st.role&&st.name.trim()&&!st.submitting);
 }
 
-// ── ส่งข้อมูลไป GAS ผ่าน fetch (form-encoded = simple CORS) ──
 async function doSubmit(){
   st.submitting=true;
   const lbl=document.getElementById("confirm-lbl");
@@ -448,10 +507,13 @@ function renderSent(app){
   const ng=STATIONS.filter(s=>hasNG(s.id));
   const ngHtml=ng.map(s=>{
     const a=st.ans[s.id];
-    const issues=QS.filter(q=>a[q.key]==="X").map(q=>q.label.split(".")[1].trim()).join(", ");
-    const notes=QS.filter(q=>a[q.key]==="X"&&a[q.key+"_n"]).map(q=>`${q.label.split(".")[1].trim()}: ${a[q.key+"_n"]}`).join(" / ");
-    return`<div class="ng-item">• จุด ${s.id}: ${s.name}<span class="ng-item-note">NG: ${issues}${notes?" — "+notes:""}</span></div>`;
+    const issues=ISSUE_KEYS.filter(k=>a[k.key].on).map(k=>{
+      const note=a[k.key].note.trim();
+      return note?`${k.label}: ${note}`:k.label;
+    }).join(", ");
+    return`<div class="ng-item">• จุด ${s.id}: ${s.name}<span class="ng-item-detail">${issues}</span></div>`;
   }).join("");
+
   app.innerHTML=`
   <div class="topbar"><div class="top-title">Long Holiday Patrol</div></div>
   <div class="fullscreen">
@@ -492,9 +554,7 @@ function renderError(app){
     <div class="err-msg">${msg}</div>
     <button class="btn-action btn-dark" id="btn-back">กลับแก้ไข</button>
   </div>`;
-  document.getElementById("btn-back").addEventListener("click",()=>{
-    st.submitting=false;st.page="presubmit";render();
-  });
+  document.getElementById("btn-back").addEventListener("click",()=>{st.submitting=false;st.page="presubmit";render();});
 }
 
 render();
